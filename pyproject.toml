@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "pyremote"
+version = "0.1.0"
+description = "A tool to execute python remotely!"
+authors = ["wwarami <me.aryooou@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+cryptography = "^41.0.4"
+
+[tool.poetry.scripts]
+pyremote-client = "pyremote.client.client:main"
+pyremote-server = "pyremote.server.server:main"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
