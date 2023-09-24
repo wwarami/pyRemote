@@ -4,7 +4,7 @@ from .base import IOHandler, RequestManager
 
 
 class AsyncIORequestsManager(RequestManager):
-    """This class will be used for managing and creating IOHandlers."""
+    """This class will be used for managing and creating AsyncIOHandlers."""
     def __init__(self, io_handler: Type[IOHandler]):
         self.io_handler_cls = io_handler
 
