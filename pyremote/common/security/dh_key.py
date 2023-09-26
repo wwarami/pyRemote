@@ -7,6 +7,7 @@ from cryptography.hazmat.primitives import serialization
 
 
 class DHKeys:
+    """ A class for handling generate and security part of Diffie-Hellman key exchange."""
     @staticmethod
     def get_bytes_parameters(parameters: dh.DHParameters):
         return parameters.parameter_bytes(encoding=serialization.Encoding.PEM,
@@ -16,8 +17,9 @@ class DHKeys:
     def load_parameters_by_bytes(param_bytes: bytes) -> dh.DHParameters:
         return serialization.load_pem_parameters(param_bytes, backend=backends.default_backend())
 
-    def generate_private_key(self) -> dh.DHPrivateKey:
-        return self.parameters.generate_private_key()
+    @staticmethod
+    def generate_private_key(parameters: dh.DHParameters) -> dh.DHPrivateKey:
+        return parameters.generate_private_key()
 
     def _set_parameters(self, parameters: dh.DHParameters) -> None:
         self.parameters = parameters
