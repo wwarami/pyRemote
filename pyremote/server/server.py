@@ -8,7 +8,7 @@ async def main() -> None:
     await start_asyncio_server(
         host='127.0.0.1',
         port=2000,
-        connection_handler=request_manager.create_io_handler)
+        connection_handler=request_manager.start_new)
 
 if __name__ == "__main__":
     asyncio.run(main())

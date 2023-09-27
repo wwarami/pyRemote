@@ -6,7 +6,7 @@ class RequestManager(ABC):
     """
     Request manager base class.
     """
-    def create_io_handler(self, *args, **kwargs):
+    def start_new(self, *args, **kwargs):
         ...
 
 

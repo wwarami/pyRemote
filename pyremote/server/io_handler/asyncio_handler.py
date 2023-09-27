@@ -1,19 +1,30 @@
 import asyncio
-from typing import Type
-from .base import IOHandler, RequestManager
+from typing import Type, Protocol
+from pyremote.server.io_handler import base
+from pyremote.server.key_exchange import base as key_ex_base
 
 
-class AsyncIORequestsManager(RequestManager):
+class SecureKeysClass(Protocol):
+    """ A class which key exchanger class will use."""
+
+
+class AsyncIORequestsManager(base.RequestManager):
     """This class will be used for managing and creating AsyncIOHandlers."""
-    def __init__(self, io_handler: Type[IOHandler]):
+
+    def __init__(self, io_handler: Type[base.IOHandler],
+                 key_exchanger: Type[key_ex_base.AsyncKeyExchanger],
+                 secure_keys_cls: SecureKeysClass):
         self.io_handler_cls = io_handler
+        self.key_exchanger = key_exchanger
+        self.dh_keys_cls = secure_keys_cls
 
-    async def create_io_handler(self, reader: asyncio.StreamReader, writer: asyncio.StreamWriter):
-        io_handler = self.io_handler_cls(reader, writer)
-        await io_handler.new_connection()
+    async def start_new(self, reader: asyncio.StreamReader, writer: asyncio.StreamWriter):
+        key_exchanger = self.key_exchanger(reader, writer, self.dh_keys_cls)
+        shared_secret = await key_exchanger.do_key_exchange()
+        # TODO: ...
 
 
-class AsyncIOHandler(IOHandler):
+class AsyncIOHandler(base.IOHandler):
     def __init__(self,
                  reader: asyncio.StreamReader,
                  writer: asyncio.StreamWriter) -> None:
