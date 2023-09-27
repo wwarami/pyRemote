@@ -1,3 +1,4 @@
+import json
 from typing import Any, Dict
 from pyremote.common.model import utils, excpetions
 
@@ -41,9 +42,6 @@ class BaseModel:
                     f'Field "{cls_field}" should be type of "{cls_field_type}" and not "{type(fields.get(cls_field))}".'
                 )
 
-    def as_dict(self) -> Dict:
-        return self.data
-
     def _set_attrs(self, **attrs) -> None:
         for key, value in attrs.items():
             setattr(self, key, value)
@@ -52,3 +50,9 @@ class BaseModel:
     def data(self) -> Dict:
         return self.__DATA
 
+    def as_json(self, start: str = '', end: str = '') -> str:
+        return start + json.dumps(self.data) + end
+
+    @classmethod
+    def from_json(cls, data: str) -> 'BaseModel':
+        return cls(**json.loads(data))
