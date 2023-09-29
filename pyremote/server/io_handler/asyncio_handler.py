@@ -16,10 +16,12 @@ class AsyncIORequestsManager(base.RequestManager):
                  secure_keys_cls: SecureKeysClass):
         self.io_handler_cls = io_handler
         self.key_exchanger = key_exchanger
-        self.dh_keys_cls = secure_keys_cls
+        self.secure_keys_cls = secure_keys_cls
 
     async def start_new(self, reader: asyncio.StreamReader, writer: asyncio.StreamWriter):
-        key_exchanger = self.key_exchanger(reader, writer, self.dh_keys_cls)
+        key_exchanger = self.key_exchanger(keys_manager_cls=self.secure_keys_cls,
+                                           reader=reader,
+                                           writer=writer)
         shared_secret = await key_exchanger.do_key_exchange()
         # TODO: ...
 

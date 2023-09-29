@@ -51,7 +51,7 @@ class BaseModel:
         return self.__DATA
 
     def as_json(self, start: str = '', end: str = '') -> str:
-        return start + json.dumps(self.data) + end
+        return str(start) + json.dumps(self.data) + str(end)
 
     @classmethod
     def from_json(cls, data: str) -> 'BaseModel':

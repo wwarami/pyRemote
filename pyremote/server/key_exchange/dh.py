@@ -4,14 +4,14 @@ from pyremote.common.security import dh_key
 from pyremote.common import configs
 
 
-class AsyncDHKeyExchanger(base.KeyExchanger):
+class AsyncDHKeyExchanger(base.AsyncKeyExchanger):
     keys_manager_cls: dh_key.DHKeys
 
-    def __init__(self, dh_keys_class: dh_key.DHKeys,
+    def __init__(self, keys_manager_cls: dh_key.DHKeys,
                  reader: asyncio.StreamReader,
                  writer: asyncio.StreamWriter
                  ):
-        self.keys_manager_cls = dh_keys_class
+        self.keys_manager_cls = keys_manager_cls
         self.reader = reader
         self.writer = writer
         self.private_key = self._generate_private_key()
